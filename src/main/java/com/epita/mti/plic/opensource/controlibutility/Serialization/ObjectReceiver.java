@@ -10,13 +10,25 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
+ * The ObjectReceiver class is part of a Observable/Observer pattern.
+ * It listens the socket in a thread and notifies its observers when an object
+ * is received and deserialized.
+ * A list of the user's observers is necessary while instantiating that class in
+ * order to notify them.
+ * 
  * @author Julien "Roulyo" Fraisse
  */
 public class ObjectReceiver extends Observable implements Runnable
 {
   private ObjectInputStream objectInputStream = null;
 
+  /**
+   * Ctor instantiate the ObjectInputStream used by the ObjectReceiver to
+   * deserialize data from a socket's input stream.
+   * 
+   * @param inputStream Socket's input stream.
+   * @param observersList List of user's observers.
+   */
   public ObjectReceiver(InputStream inputStream,
                         List<Observer> observersList)
   {
@@ -33,6 +45,12 @@ public class ObjectReceiver extends Observable implements Runnable
       addObserver(observer);
   }
  
+  /**
+   * Ctor alternate version with only one observer.
+   * 
+   * @param inputStream Socket's input stream.
+   * @param observer User's observer.
+   */
   public ObjectReceiver(InputStream inputStream,
                         Observer observer)
   {
@@ -48,6 +66,12 @@ public class ObjectReceiver extends Observable implements Runnable
     addObserver(observer);
   }
   
+  /**
+   * Set a new ObjectInputStream from another socket's input stream.
+   * Close the one used previously.
+   * 
+   * @param inputStream 
+   */
   public void setInputStream(InputStream inputStream)
   {
     try
@@ -75,6 +99,10 @@ public class ObjectReceiver extends Observable implements Runnable
     read();
   }
   
+  /**
+   * This method deserialize data from the socket while it is openned, and
+   * notifies its observers when a CLSerializable can be restitute.
+   */
   private void read()
   {
     CLSerializable object = null;
