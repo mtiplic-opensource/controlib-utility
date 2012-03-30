@@ -3,6 +3,7 @@ package com.epita.mti.plic.opensource.controlibutility.Serialization;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
+import java.util.Observable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -10,14 +11,13 @@ import java.util.logging.Logger;
  *
  * @author Julien "Roulyo" Fraisse
  */
-public class ObjectReceiver
+public class ObjectReceiver extends Observable implements Runnable
 {
-  private CLDispatcher dispatcher = null;
   private ObjectInputStream objectInputStream = null;
 
   public void setInputStream(InputStream inputStream)
   {
- try
+    try
     {
       this.objectInputStream.close();
     }
@@ -48,7 +48,13 @@ public class ObjectReceiver
     }
   }
 
-  public void read()
+  @Override
+  public void run()
+  {
+    read();
+  }
+  
+  private void read()
   {
     CLSerializable object = null;
     
@@ -56,7 +62,7 @@ public class ObjectReceiver
     {
       while ((object = (CLSerializable) objectInputStream.readObject()) != null)
       {
-        // MAGICAL STUFF HERE
+        notifyObservers(object);
       }
     }
     catch (IOException ex)
@@ -68,4 +74,5 @@ public class ObjectReceiver
       Logger.getLogger(ObjectReceiver.class.getName()).log(Level.SEVERE, null, ex);
     }
   }
+
 }
