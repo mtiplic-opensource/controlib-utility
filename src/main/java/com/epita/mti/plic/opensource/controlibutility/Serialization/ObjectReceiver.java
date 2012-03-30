@@ -32,14 +32,7 @@ public class ObjectReceiver extends Observable implements Runnable
   public ObjectReceiver(InputStream inputStream,
                         List<Observer> observersList)
   {
-    try
-    {
-      this.objectInputStream = new ObjectInputStream(inputStream);
-    }
-    catch (IOException ex)
-    {
-      Logger.getLogger(ObjectReceiver.class.getName()).log(Level.SEVERE, "Cannot instantiate ObjectInputStream", ex);
-    }
+    this.objectInputStreamInit(inputStream);
     
     for (Observer observer : observersList)
       addObserver(observer);
@@ -54,16 +47,10 @@ public class ObjectReceiver extends Observable implements Runnable
   public ObjectReceiver(InputStream inputStream,
                         Observer observer)
   {
-    try
-    {
-      this.objectInputStream = new ObjectInputStream(inputStream);
-    }
-    catch (IOException ex)
-    {
-      Logger.getLogger(ObjectReceiver.class.getName()).log(Level.SEVERE, "Cannot instantiate ObjectInputStream", ex);
-    }
-    
+    this.objectInputStreamInit(inputStream);
+
     addObserver(observer);
+    System.out.println("echo");
   }
   
   /**
@@ -77,6 +64,7 @@ public class ObjectReceiver extends Observable implements Runnable
     try
     {
       this.objectInputStream.close();
+      System.out.println("OK");
     }
     catch (IOException ex)
     {
@@ -96,22 +84,23 @@ public class ObjectReceiver extends Observable implements Runnable
   @Override
   public void run()
   {
-    read();
+    this.read();
   }
   
   /**
    * This method deserialize data from the socket while it is openned, and
    * notifies its observers when a CLSerializable can be restitute.
    */
-  private void read()
+  private synchronized void read()
   {
-    CLSerializable object = null;
+    CLSerializable bean = null;
     
     try
     {
-      while ((object = (CLSerializable) objectInputStream.readObject()) != null)
+      while ((bean = (CLSerializable) this.objectInputStream.readObject()) != null)
       {
-        notifyObservers(object);
+        setChanged();
+        notifyObservers(bean);
       }
     }
     catch (IOException ex)
@@ -124,4 +113,15 @@ public class ObjectReceiver extends Observable implements Runnable
     }
   }
 
+  private synchronized void objectInputStreamInit(InputStream inputStream)
+  {
+    try
+    {
+      this.objectInputStream = new ObjectInputStream(inputStream);
+    }
+    catch (IOException ex)
+    {
+      Logger.getLogger(ObjectReceiver.class.getName()).log(Level.SEVERE, "Cannot instantiate ObjectInputStream", ex);
+    }
+  }
 }
