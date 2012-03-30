@@ -2,7 +2,9 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.epita.mti.plic.opensource.controlibutility.Serialization;
+package com.epita.mti.plic.opensource.controlibutility.beans;
+
+import com.epita.mti.plic.opensource.controlibutility.serialization.CLSerializable;
 
 /**
  *

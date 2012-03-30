@@ -1,4 +1,4 @@
-package com.epita.mti.plic.opensource.controlibutility.Serialization;
+package com.epita.mti.plic.opensource.controlibutility.serialization;
 
 import java.io.Serializable;
 

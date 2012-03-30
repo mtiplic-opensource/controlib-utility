@@ -1,4 +1,6 @@
-package com.epita.mti.plic.opensource.controlibutility.Serialization;
+package com.epita.mti.plic.opensource.controlibutility.beans;
+
+import com.epita.mti.plic.opensource.controlibutility.serialization.CLSerializable;
 
 /*
  * To change this template, choose Tools | Templates
