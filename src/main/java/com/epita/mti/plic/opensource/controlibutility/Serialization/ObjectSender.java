@@ -15,6 +15,18 @@ public class ObjectSender
 
   private ObjectOutputStream objectOutputStream;
 
+  public ObjectSender(OutputStream outputStream)
+  {
+    try
+    {
+      this.objectOutputStream = new ObjectOutputStream(outputStream);
+    }
+    catch (IOException ex)
+    {
+      Logger.getLogger(ObjectSender.class.getName()).log(Level.SEVERE, "Cannot instantiate ObjectOutputStream", ex);
+    }
+  }
+  
   public void setOutputStream(OutputStream outputStream)
   {
     try
@@ -27,18 +39,6 @@ public class ObjectSender
       Logger.getLogger(ObjectSender.class.getName()).log(Level.SEVERE, "Cannot close ObjectOutputStream", ex);
     }
     
-    try
-    {
-      this.objectOutputStream = new ObjectOutputStream(outputStream);
-    }
-    catch (IOException ex)
-    {
-      Logger.getLogger(ObjectSender.class.getName()).log(Level.SEVERE, "Cannot instantiate ObjectOutputStream", ex);
-    }
-  }
-
-  public ObjectSender(OutputStream outputStream)
-  {
     try
     {
       this.objectOutputStream = new ObjectOutputStream(outputStream);
