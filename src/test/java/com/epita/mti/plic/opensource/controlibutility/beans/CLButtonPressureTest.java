@@ -27,6 +27,16 @@ public class CLButtonPressureTest extends TestCase {
   }
 
   /**
+   * Test of getType method, of class CLButtonPressure.
+   */
+  public void testGetType() {
+    CLButtonPressure instance = new CLButtonPressure();
+    String expResult = "button-pressure";
+    String result = instance.getType();
+    assertEquals(expResult, result);
+  }
+
+  /**
    * Test of getButtonId method, of class CLButtonPressure.
    */
   public void testGetButtonId() {

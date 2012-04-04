@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.epita.mti.plic.opensource.controlibutility.beans;
 
 import junit.framework.Test;
@@ -31,6 +27,16 @@ public class CLPressureTest extends TestCase {
   @Override
   protected void tearDown() throws Exception {
     super.tearDown();
+  }
+
+  /**
+   * Test of getType method, of class CLPressure.
+   */
+  public void testGetType() {
+    CLPressure instance = new CLPressure();
+    String expResult = "pressure";
+    String result = instance.getType();
+    assertEquals(expResult, result);
   }
 
   /**

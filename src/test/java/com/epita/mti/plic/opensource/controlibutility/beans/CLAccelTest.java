@@ -34,6 +34,16 @@ public class CLAccelTest extends TestCase {
   }
 
   /**
+   * Test of getType method, of class CLAccel.
+   */
+  public void testGetType() {
+    CLAccel instance = new CLAccel();
+    String expResult = "accel";
+    String result = instance.getType();
+    assertEquals(expResult, result);
+  }
+
+  /**
    * Test of getX method, of class CLAccel.
    */
   public void testGetX() {

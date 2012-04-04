@@ -14,11 +14,4 @@ public abstract class CLSerializable implements Serializable
   {
     return type;
   }
-
-  public void setType(String type)
-  {
-    this.type = type;
-  }
-
-
 }
