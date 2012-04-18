@@ -2,6 +2,7 @@ package com.epita.mti.plic.opensource.controlibutility.serialization;
 
 import java.beans.IntrospectionException;
 import java.beans.PropertyDescriptor;
+import java.io.File;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
@@ -85,18 +86,8 @@ public class ObjectSender
   {
     try
     {
-      Class<? extends CLSerializable> beanClass = bean.getClass();
-      Field[] fields = beanClass.getDeclaredFields();
       ObjectMapper mapper = new ObjectMapper();
-      Map<String, Object> map = new HashMap<>();
-      map.put("class", beanClass);
-      for (Field field : fields)
-      {
-        field.setAccessible(true);
-        Object value = new PropertyDescriptor(field.getName(), beanClass).getReadMethod().invoke(bean);
-        map.put(field.getName(), value);
-      }
-      mapper.writeValue(objectOutputStream, map);
+      mapper.writeValue(new File("test"), bean);
     }
     catch (IOException ex)
     {
