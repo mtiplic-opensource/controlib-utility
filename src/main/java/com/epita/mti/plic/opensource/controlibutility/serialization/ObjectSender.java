@@ -1,19 +1,10 @@
 package com.epita.mti.plic.opensource.controlibutility.serialization;
 
-import java.beans.IntrospectionException;
-import java.beans.PropertyDescriptor;
-import java.io.File;
 import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.io.OutputStream;
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.codehaus.jackson.JsonFactory;
-import org.codehaus.jackson.JsonGenerator;
 import org.codehaus.jackson.map.ObjectMapper;
 
 /**
@@ -28,7 +19,7 @@ public class ObjectSender
   /**
    * The stream used to serialize objects for the socket communication.
    */
-  private ObjectOutputStream objectOutputStream;
+  private OutputStream outputStream;
 
   /**
    * Ctor instantiate the ObjectOutputStream used by the ObjectSender to
@@ -38,14 +29,7 @@ public class ObjectSender
    */
   public ObjectSender(OutputStream outputStream)
   {
-    try
-    {
-      this.objectOutputStream = new ObjectOutputStream(outputStream);
-    }
-    catch (IOException ex)
-    {
-      Logger.getLogger(ObjectSender.class.getName()).log(Level.SEVERE, "Cannot instantiate ObjectOutputStream", ex);
-    }
+    this.outputStream = outputStream;
   }
 
   /**
@@ -58,22 +42,14 @@ public class ObjectSender
   {
     try
     {
-      this.objectOutputStream.flush();
-      this.objectOutputStream.close();
+      this.outputStream.flush();
+      this.outputStream.close();
     }
     catch (IOException ex)
     {
       Logger.getLogger(ObjectSender.class.getName()).log(Level.SEVERE, "Cannot close ObjectOutputStream", ex);
     }
-
-    try
-    {
-      this.objectOutputStream = new ObjectOutputStream(outputStream);
-    }
-    catch (IOException ex)
-    {
-      Logger.getLogger(ObjectSender.class.getName()).log(Level.SEVERE, "Cannot instantiate ObjectOutputStream", ex);
-    }
+    this.outputStream = outputStream;
   }
 
   /**
@@ -82,12 +58,12 @@ public class ObjectSender
    * @param bean The bean represents data about pressures, accelerometric
    * values, and so on.
    */
-  public void send(CLSerializable bean) throws InvocationTargetException, IllegalAccessException, IntrospectionException
+  public void send(CLSerializable bean) throws InvocationTargetException, IllegalAccessException
   {
     try
     {
       ObjectMapper mapper = new ObjectMapper();
-      mapper.writeValue(new File("test"), bean);
+      mapper.writeValue(outputStream, bean);
     }
     catch (IOException ex)
     {
