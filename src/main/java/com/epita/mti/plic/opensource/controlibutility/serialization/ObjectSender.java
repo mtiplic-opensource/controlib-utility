@@ -34,7 +34,25 @@ public class ObjectSender
     }
     catch (IOException ex)
     {
-      Logger.getLogger(ObjectSender.class.getName()).log(Level.SEVERE, "Cannot instantiate ObjectOutputStream", ex);
+      ex.printStackTrace();
+//      Logger.getLogger(ObjectSender.class.getName()).log(Level.SEVERE, "Cannot instantiate ObjectOutputStream", ex);
+    }
+  }
+  
+  /**
+   * This method allows users to close the stream properly.
+   */
+  public void disposeStream()
+  {
+    try
+    {
+      this.objectOutputStream.flush();
+      this.objectOutputStream.close();
+    }
+    catch (IOException ex)
+    {
+      ex.printStackTrace();
+//      Logger.getLogger(ObjectSender.class.getName()).log(Level.SEVERE, "Cannot close ObjectOutputStream", ex);
     }
   }
   
@@ -53,7 +71,8 @@ public class ObjectSender
     }
     catch (IOException ex)
     {
-      Logger.getLogger(ObjectSender.class.getName()).log(Level.SEVERE, "Cannot close ObjectOutputStream", ex);
+      ex.printStackTrace();
+//      Logger.getLogger(ObjectSender.class.getName()).log(Level.SEVERE, "Cannot close ObjectOutputStream", ex);
     }
     
     try
@@ -62,7 +81,8 @@ public class ObjectSender
     }
     catch (IOException ex)
     {
-      Logger.getLogger(ObjectSender.class.getName()).log(Level.SEVERE, "Cannot instantiate ObjectOutputStream", ex);
+      ex.printStackTrace();
+//      Logger.getLogger(ObjectSender.class.getName()).log(Level.SEVERE, "Cannot instantiate ObjectOutputStream", ex);
     }
   }
 
@@ -77,11 +97,12 @@ public class ObjectSender
     try
     {
       objectOutputStream.writeObject(bean);
-      objectOutputStream.flush();
+      objectOutputStream.flush(); 
     }
     catch (IOException ex)
     {
-      Logger.getLogger(ObjectSender.class.getName()).log(Level.SEVERE, "Cannot write into socket", ex);
+      ex.printStackTrace();
+//      Logger.getLogger(ObjectSender.class.getName()).log(Level.SEVERE, "Cannot write into socket", ex);
     }
   }
 }

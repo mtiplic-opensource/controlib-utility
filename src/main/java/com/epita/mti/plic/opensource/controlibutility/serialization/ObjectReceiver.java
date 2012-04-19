@@ -3,6 +3,7 @@ package com.epita.mti.plic.opensource.controlibutility.serialization;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
+import java.net.Socket;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
@@ -29,10 +30,17 @@ public class ObjectReceiver extends Observable implements Runnable
    * @param inputStream Socket's input stream.
    * @param observersList List of user's observers.
    */
-  public ObjectReceiver(InputStream inputStream,
+  public ObjectReceiver(Socket socket,
                         List<Observer> observersList)
   {
-    this.objectInputStreamInit(inputStream);
+    try
+    {
+      this.objectInputStreamInit(socket.getInputStream());
+    }
+    catch (IOException ex)
+    {
+      Logger.getLogger(ObjectReceiver.class.getName()).log(Level.SEVERE, "Cannot open input stream from socket", ex);
+    }
     
     for (Observer observer : observersList)
       addObserver(observer);
@@ -44,13 +52,34 @@ public class ObjectReceiver extends Observable implements Runnable
    * @param inputStream Socket's input stream.
    * @param observer User's observer.
    */
-  public ObjectReceiver(InputStream inputStream,
+  public ObjectReceiver(Socket socket,
                         Observer observer)
   {
-    this.objectInputStreamInit(inputStream);
-
+    try
+    {
+      this.objectInputStreamInit(socket.getInputStream());
+    }
+    catch (IOException ex)
+    {
+      Logger.getLogger(ObjectReceiver.class.getName()).log(Level.SEVERE, "Cannot open input stream from socket", ex);
+    }
+    
     addObserver(observer);
-    System.out.println("echo");
+  }
+  
+  /**
+   * This method allows users to close the stream properly.
+   */
+  public void disposeStream()
+  {
+    try
+    {
+      this.objectInputStream.close();
+    }
+    catch (IOException ex)
+    {
+      Logger.getLogger(ObjectReceiver.class.getName()).log(Level.SEVERE, "Cannot close ObjectInputStream", ex);
+    }
   }
   
   /**
