@@ -2,20 +2,29 @@ package com.epita.mti.plic.opensource.controlibutility.beans;
 
 import com.epita.mti.plic.opensource.controlibutility.serialization.CLSerializable;
 
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 /**
  *
  * @author Benoit "KIDdAe" Vasseur
+ * This class will be used to serialize data coming from
+ * a pressure on the device's screen.
+ * It contains coordinates of the pressure.
  */
-public class CLPressure extends CLSerializable {
+public class CLPressure extends CLSerializable
+{
 
+  /**
+   * X axis value on the device's screen
+   */
   protected Integer x;
+
+  /**
+   * Y axis value on the device's screen
+   */
   protected Integer y;
 
+  /**
+   * Constructor
+   */
   public CLPressure ()
   {
     this.type = "pressure";
@@ -26,7 +35,8 @@ public class CLPressure extends CLSerializable {
    *
    * @return the value of x
    */
-  public Integer getX() {
+  public Integer getX()
+  {
     return x;
   }
 
@@ -35,7 +45,8 @@ public class CLPressure extends CLSerializable {
    *
    * @param x new value of x
    */
-  public void setX(Integer x) {
+  public void setX(Integer x)
+  {
     this.x = x;
   }
 
@@ -44,7 +55,8 @@ public class CLPressure extends CLSerializable {
    *
    * @return the value of y
    */
-  public Integer getY() {
+  public Integer getY()
+  {
     return y;
   }
 
@@ -53,7 +65,8 @@ public class CLPressure extends CLSerializable {
    *
    * @param y new value of y
    */
-  public void setY(Integer y) {
+  public void setY(Integer y)
+  {
     this.y = y;
   }
 }
