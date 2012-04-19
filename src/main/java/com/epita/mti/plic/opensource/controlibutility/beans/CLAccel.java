@@ -1,6 +1,7 @@
 package com.epita.mti.plic.opensource.controlibutility.beans;
 
 import com.epita.mti.plic.opensource.controlibutility.serialization.CLSerializable;
+import java.util.HashMap;
 
 /**
  *
@@ -14,17 +15,16 @@ public class CLAccel extends CLSerializable
   /**
    * X axis value in space
    */
-  protected Integer x;
-
+  protected Double x;
   /**
    * Y axis value in space
    */
-  protected Integer y;
+  protected Double y;
 
   /**
    * Z axis value in space
    */
-  protected Integer z;
+  protected Double z;
 
   /**
    * Constructor
@@ -34,32 +34,54 @@ public class CLAccel extends CLSerializable
     this.type = "accel";
   }
 
-  public Integer getX()
+  public CLAccel(HashMap<String, Object> map)
+  {
+    super(map);
+    System.out.println("x :");
+    System.out.println(map.get("x"));
+    Object mapx = map.get("x");
+    Object mapy = map.get("y");
+    Object mapz = map.get("z");
+    if (mapx != null)
+      this.x = Double.parseDouble(mapx.toString());
+    else
+      this.x = 0.0;
+    if (mapy != null)
+      this.y = Double.parseDouble(mapy.toString());
+    else
+      this.y = 0.0;
+    if (mapz != null)
+      this.z = Double.parseDouble(mapz.toString());
+    else
+      this.z = 0.0;
+  }
+
+  public Double getX()
   {
     return x;
   }
 
-  public void setX(Integer x)
+  public void setX(Double x)
   {
     this.x = x;
   }
 
-  public Integer getY()
+  public Double getY()
   {
     return y;
   }
 
-  public void setY(Integer y)
+  public void setY(Double y)
   {
     this.y = y;
   }
 
-  public Integer getZ()
+  public Double getZ()
   {
     return z;
   }
 
-  public void setZ(Integer z)
+  public void setZ(Double z)
   {
     this.z = z;
   }

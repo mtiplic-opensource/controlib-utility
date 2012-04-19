@@ -1,6 +1,7 @@
 package com.epita.mti.plic.opensource.controlibutility.beans;
 
 import com.epita.mti.plic.opensource.controlibutility.serialization.CLSerializable;
+import java.util.HashMap;
 
 /**
  *
@@ -28,6 +29,21 @@ public class CLPressure extends CLSerializable
   public CLPressure ()
   {
     this.type = "pressure";
+  }
+
+  public CLPressure(HashMap<String, Object> map)
+  {
+    super(map);
+    Object mapx = map.get("x");
+    Object mapy = map.get("y");
+    if (mapx != null)
+      x = Integer.parseInt(mapx.toString());
+    else
+      x = 0;
+    if (mapy != null)
+      y = Integer.parseInt(mapy.toString());
+    else
+      y = 0;
   }
 
   /**

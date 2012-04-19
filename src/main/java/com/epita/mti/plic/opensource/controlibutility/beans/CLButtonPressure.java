@@ -1,6 +1,7 @@
 package com.epita.mti.plic.opensource.controlibutility.beans;
 
 import com.epita.mti.plic.opensource.controlibutility.serialization.CLSerializable;
+import java.util.HashMap;
 
 /**
  *
@@ -22,6 +23,16 @@ public class CLButtonPressure extends CLSerializable
   public CLButtonPressure()
   {
      this.type = "button-pressure";
+  }
+
+  public CLButtonPressure(HashMap<String, Object> map)
+  {
+    super(map);
+    Object mapButtonId = map.get("buttonId");
+    if (mapButtonId != null)
+      buttonId = Integer.parseInt(mapButtonId.toString());
+    else
+      buttonId = 0;
   }
 
   public Integer getButtonId()
