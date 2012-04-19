@@ -6,8 +6,8 @@ import java.lang.reflect.InvocationTargetException;
 import org.codehaus.jackson.map.ObjectMapper;
 
 /**
- * The ObjectSender class is the one which send data over the socket.
- * It takes its output stream in order to create the object output stream.
+ * The ObjectSender class is the one which send data over the socket. It takes
+ * its output stream in order to create the object output stream.
  *
  * @author Julien "Roulyo" Fraisse
  */
@@ -17,7 +17,11 @@ public class ObjectSender
   /**
    * The stream used to serialize objects for the socket communication.
    */
-  private OutputStream outputStream;
+  private OutputStream outputStream = null;
+  /**
+   * The mapper used to serialize in JSON.
+   */
+  private ObjectMapper mapper = null;
 
   /**
    * Ctor instantiate the ObjectOutputStream used by the ObjectSender to
@@ -28,11 +32,12 @@ public class ObjectSender
   public ObjectSender(OutputStream outputStream)
   {
     this.outputStream = outputStream;
+    this.mapper = new ObjectMapper();
   }
 
   /**
-   * Set a new ObjectOutputStream from another socket's output stream.
-   * Flush and close the one used previously.
+   * Set a new ObjectOutputStream from another socket's output stream. Flush and
+   * close the one used previously.
    *
    * @param outputStream Socket's output stream.
    */
@@ -61,7 +66,6 @@ public class ObjectSender
   {
     try
     {
-      ObjectMapper mapper = new ObjectMapper();
       mapper.writeValue(outputStream, bean);
     }
     catch (IOException ex)
