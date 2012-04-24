@@ -44,9 +44,9 @@ public class CLAccelTest extends TestCase {
    */
   public void testGetX() {
     CLAccel instance = new CLAccel();
-    Integer expResult = 3;
-    instance.x = 3;
-    Integer result = instance.getX();
+    Double expResult = 3.0;
+    instance.x = 3.0;
+    Double result = instance.getX();
     assertEquals(expResult, result);
   }
 
@@ -54,7 +54,7 @@ public class CLAccelTest extends TestCase {
    * Test of setX method, of class CLAccel.
    */
   public void testSetX() {
-    Integer x = 3;
+    Double x = 3.0;
     CLAccel instance = new CLAccel();
     instance.setX(x);
     assertEquals(instance.x, x);
@@ -65,9 +65,9 @@ public class CLAccelTest extends TestCase {
    */
   public void testGetY() {
     CLAccel instance = new CLAccel();
-    Integer expResult = 3;
-    instance.y = 3;
-    Integer result = instance.getY();
+    Double expResult = 3.0;
+    instance.y = 3.0;
+    Double result = instance.getY();
     assertEquals(expResult, result);
   }
 
@@ -75,7 +75,7 @@ public class CLAccelTest extends TestCase {
    * Test of setY method, of class CLAccel.
    */
   public void testSetY() {
-    Integer y = 3;
+    Double y = 3.0;
     CLAccel instance = new CLAccel();
     instance.setY(y);
     assertEquals(instance.y, y);
@@ -86,9 +86,9 @@ public class CLAccelTest extends TestCase {
    */
   public void testGetZ() {
     CLAccel instance = new CLAccel();
-    Integer expResult = 3;
-    instance.z = 3;
-    Integer result = instance.getZ();
+    Double expResult = 3.0;
+    instance.z = 3.0;
+    Double result = instance.getZ();
     assertEquals(expResult, result);
   }
 
@@ -96,7 +96,7 @@ public class CLAccelTest extends TestCase {
    * Test of setZ method, of class CLAccel.
    */
   public void testSetZ() {
-    Integer z = 3;
+    Double z = 3.0;
     CLAccel instance = new CLAccel();
     instance.setZ(z);
     assertEquals(instance.z, z);
