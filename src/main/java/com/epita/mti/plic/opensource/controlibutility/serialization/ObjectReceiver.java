@@ -148,23 +148,24 @@ public class ObjectReceiver extends Observable implements Runnable
     Map<String, Object> map;
     try
     {
-      while ((map = mapper.readValue(inputStream, new TypeReference<Map<String, Object>>(){})) != null)
+      while ((map = mapper.readValue(inputStream, new TypeReference<Map<String, Object>>()
+      {
+      })) != null)
       {
         Object mapType = map.get("type");
         Class<?> beanClass;
         if (mapType != null)
         {
           beanClass = beansMap.get(mapType.toString());
+          Constructor<?> constructor = beanClass.getConstructor(HashMap.class);
+          bean = (CLSerializable) constructor.newInstance(map);
+          setChanged();
+          notifyObservers(bean);
         }
         else
         {
           map = null;
-          continue;
         }
-        Constructor<?> constructor = beanClass.getConstructor(HashMap.class);
-        bean = (CLSerializable) constructor.newInstance(map);
-        setChanged();
-        notifyObservers(bean);
       }
     }
     catch (IOException ex)
