@@ -11,6 +11,7 @@ import java.net.Socket;
 import java.util.*;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.map.ObjectReader;
 import org.codehaus.jackson.type.TypeReference;
 
 /**
@@ -26,7 +27,7 @@ public class ObjectReceiver extends Observable implements Runnable
 
   private InputStream inputStream = null;
   public static HashMap<String, Class<?>> beansMap;
-  private ObjectMapper mapper = null;
+  private ObjectReader reader = null;
 
   /**
    * Ctor instantiate the IntputStream used by the ObjectReceiver to deserialize
@@ -43,7 +44,10 @@ public class ObjectReceiver extends Observable implements Runnable
     {
       addObserver(observer);
     }
-    mapper = new ObjectMapper().configure(JsonParser.Feature.AUTO_CLOSE_SOURCE, false);
+    ObjectMapper mapper = new ObjectMapper().configure(JsonParser.Feature.AUTO_CLOSE_SOURCE, false);
+    reader = mapper.reader(new TypeReference<Map<String, Object>>()
+    {
+    });
     initMap();
   }
 
@@ -58,7 +62,10 @@ public class ObjectReceiver extends Observable implements Runnable
   {
     this.inputStream = socket.getInputStream();
     addObserver(observer);
-    mapper = new ObjectMapper().configure(JsonParser.Feature.AUTO_CLOSE_SOURCE, false);
+    ObjectMapper mapper = new ObjectMapper().configure(JsonParser.Feature.AUTO_CLOSE_SOURCE, false);
+    reader = mapper.reader(new TypeReference<Map<String, Object>>()
+    {
+    });
     initMap();
   }
 
@@ -149,9 +156,7 @@ public class ObjectReceiver extends Observable implements Runnable
     Map<String, Object> map;
     try
     {
-      while ((map = mapper.readValue(inputStream, new TypeReference<Map<String, Object>>()
-      {
-      })) != null)
+      while ((map = reader.readValue(inputStream)) != null)
       {
         Object mapType = map.get("type");
         Class<?> beanClass;
