@@ -9,8 +9,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.net.Socket;
 import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
 
@@ -27,7 +26,7 @@ public class ObjectReceiver extends Observable implements Runnable
 
   private InputStream inputStream = null;
   public static HashMap<String, Class<?>> beansMap;
-  private ObjectMapper mapper = new ObjectMapper();
+  private ObjectMapper mapper = null;
 
   /**
    * Ctor instantiate the IntputStream used by the ObjectReceiver to deserialize
@@ -44,6 +43,7 @@ public class ObjectReceiver extends Observable implements Runnable
     {
       addObserver(observer);
     }
+    mapper = new ObjectMapper().configure(JsonParser.Feature.AUTO_CLOSE_SOURCE, false);
     initMap();
   }
 
@@ -58,6 +58,7 @@ public class ObjectReceiver extends Observable implements Runnable
   {
     this.inputStream = socket.getInputStream();
     addObserver(observer);
+    mapper = new ObjectMapper().configure(JsonParser.Feature.AUTO_CLOSE_SOURCE, false);
     initMap();
   }
 
@@ -84,7 +85,7 @@ public class ObjectReceiver extends Observable implements Runnable
     }
     catch (IOException ex)
     {
-      Logger.getLogger(ObjectReceiver.class.getName()).log(Level.SEVERE, "Cannot close IntputStream", ex);
+      ex.printStackTrace();
     }
   }
 
@@ -103,7 +104,7 @@ public class ObjectReceiver extends Observable implements Runnable
     }
     catch (IOException ex)
     {
-      Logger.getLogger(ObjectSender.class.getName()).log(Level.SEVERE, "Cannot close IntputStream", ex);
+      ex.printStackTrace();
     }
 
     this.inputStream = inputStream;
@@ -118,23 +119,23 @@ public class ObjectReceiver extends Observable implements Runnable
     }
     catch (NoSuchMethodException ex)
     {
-      Logger.getLogger(ObjectReceiver.class.getName()).log(Level.SEVERE, null, ex);
+      ex.printStackTrace();
     }
     catch (IllegalArgumentException ex)
     {
-      Logger.getLogger(ObjectReceiver.class.getName()).log(Level.SEVERE, null, ex);
+      ex.printStackTrace();
     }
     catch (InvocationTargetException ex)
     {
-      Logger.getLogger(ObjectReceiver.class.getName()).log(Level.SEVERE, null, ex);
+      ex.printStackTrace();
     }
     catch (InstantiationException ex)
     {
-      Logger.getLogger(ObjectReceiver.class.getName()).log(Level.SEVERE, null, ex);
+      ex.printStackTrace();
     }
     catch (IllegalAccessException ex)
     {
-      Logger.getLogger(ObjectReceiver.class.getName()).log(Level.SEVERE, null, ex);
+      ex.printStackTrace();
     }
   }
 
@@ -170,7 +171,7 @@ public class ObjectReceiver extends Observable implements Runnable
     }
     catch (IOException ex)
     {
-      Logger.getLogger(ObjectReceiver.class.getName()).log(Level.SEVERE, "Cannot read the IntputStream", ex);
+      ex.printStackTrace();
     }
   }
 }
