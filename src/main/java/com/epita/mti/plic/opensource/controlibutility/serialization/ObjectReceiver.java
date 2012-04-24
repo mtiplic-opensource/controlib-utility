@@ -1,59 +1,49 @@
 package com.epita.mti.plic.opensource.controlibutility.serialization;
 
-import com.epita.mti.plic.opensource.controlibutility.beans.*;
-import java.io.File;
+import com.epita.mti.plic.opensource.controlibutility.beans.CLAccel;
+import com.epita.mti.plic.opensource.controlibutility.beans.CLButtonPressure;
+import com.epita.mti.plic.opensource.controlibutility.beans.CLPressure;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.ObjectInputStream;
 import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.net.Socket;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Observable;
-import java.util.Observer;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.*;
+import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
 
 /**
- * The ObjectReceiver class is part of a Observable/Observer pattern.
- * It listens the socket in a thread and notifies its observers when an object
- * is received and deserialized.
- * A list of the user's observers is necessary while instantiating that class in
- * order to notify them.
+ * The ObjectReceiver class is part of a Observable/Observer pattern. It listens
+ * the socket in a thread and notifies its observers when an object is received
+ * and deserialized. A list of the user's observers is necessary while
+ * instantiating that class in order to notify them.
  *
  * @author Julien "Roulyo" Fraisse
  */
 public class ObjectReceiver extends Observable implements Runnable
 {
-  private ObjectInputStream objectInputStream = null;
+
+  private InputStream inputStream = null;
   public static HashMap<String, Class<?>> beansMap;
-  private ObjectMapper mapper = new ObjectMapper();
+  private ObjectMapper mapper = null;
 
   /**
-   * Ctor instantiate the ObjectInputStream used by the ObjectReceiver to
-   * deserialize data from a socket's input stream.
+   * Ctor instantiate the IntputStream used by the ObjectReceiver to deserialize
+   * data from a socket's input stream.
    *
    * @param inputStream Socket's input stream.
    * @param observersList List of user's observers.
    */
   public ObjectReceiver(Socket socket,
-                        List<Observer> observersList)
+                        List<Observer> observersList) throws IOException
   {
-    try
-    {
-      this.objectInputStreamInit(socket.getInputStream());
-    }
-    catch (IOException ex)
-    {
-      Logger.getLogger(ObjectReceiver.class.getName()).log(Level.SEVERE, "Cannot open input stream from socket", ex);
-    }
+    this.inputStream = socket.getInputStream();
     for (Observer observer : observersList)
+    {
       addObserver(observer);
+    }
+    mapper = new ObjectMapper().configure(JsonParser.Feature.AUTO_CLOSE_SOURCE, false);
     initMap();
   }
 
@@ -64,18 +54,11 @@ public class ObjectReceiver extends Observable implements Runnable
    * @param observer User's observer.
    */
   public ObjectReceiver(Socket socket,
-                        Observer observer)
+                        Observer observer) throws IOException
   {
-    try
-    {
-     this.objectInputStreamInit(socket.getInputStream());
-    }
-    catch (IOException ex)
-    {
-      Logger.getLogger(ObjectReceiver.class.getName()).log(Level.SEVERE, "Cannot open input stream from socket", ex);
-    }
-
+    this.inputStream = socket.getInputStream();
     addObserver(observer);
+    mapper = new ObjectMapper().configure(JsonParser.Feature.AUTO_CLOSE_SOURCE, false);
     initMap();
   }
 
@@ -98,17 +81,17 @@ public class ObjectReceiver extends Observable implements Runnable
   {
     try
     {
-      this.objectInputStream.close();
+      this.inputStream.close();
     }
     catch (IOException ex)
     {
-      Logger.getLogger(ObjectReceiver.class.getName()).log(Level.SEVERE, "Cannot close ObjectInputStream", ex);
+      ex.printStackTrace();
     }
   }
 
   /**
-   * Set a new ObjectInputStream from another socket's input stream.
-   * Close the one used previously.
+   * Set a new IntputStream from another socket's input stream. Close the one
+   * used previously.
    *
    * @param inputStream
    */
@@ -116,22 +99,15 @@ public class ObjectReceiver extends Observable implements Runnable
   {
     try
     {
-      this.objectInputStream.close();
+      this.inputStream.close();
       System.out.println("OK");
     }
     catch (IOException ex)
     {
-      Logger.getLogger(ObjectSender.class.getName()).log(Level.SEVERE, "Cannot close ObjectInputStream", ex);
+      ex.printStackTrace();
     }
 
-    try
-    {
-      this.objectInputStream = new ObjectInputStream(inputStream);
-    }
-    catch (IOException ex)
-    {
-      Logger.getLogger(ObjectSender.class.getName()).log(Level.SEVERE, "Cannot instantiate ObjectInputStream", ex);
-    }
+    this.inputStream = inputStream;
   }
 
   @Override
@@ -139,22 +115,27 @@ public class ObjectReceiver extends Observable implements Runnable
   {
     try
     {
-       this.read();
+      this.read();
     }
-    catch (NoSuchMethodException ex) {
-      Logger.getLogger(ObjectReceiver.class.getName()).log(Level.SEVERE, null, ex);
+    catch (NoSuchMethodException ex)
+    {
+      ex.printStackTrace();
     }
-    catch (IllegalArgumentException ex) {
-      Logger.getLogger(ObjectReceiver.class.getName()).log(Level.SEVERE, null, ex);
+    catch (IllegalArgumentException ex)
+    {
+      ex.printStackTrace();
     }
-    catch (InvocationTargetException ex) {
-      Logger.getLogger(ObjectReceiver.class.getName()).log(Level.SEVERE, null, ex);
+    catch (InvocationTargetException ex)
+    {
+      ex.printStackTrace();
     }
-    catch (InstantiationException ex) {
-      Logger.getLogger(ObjectReceiver.class.getName()).log(Level.SEVERE, null, ex);
+    catch (InstantiationException ex)
+    {
+      ex.printStackTrace();
     }
-    catch (IllegalAccessException ex) {
-      Logger.getLogger(ObjectReceiver.class.getName()).log(Level.SEVERE, null, ex);
+    catch (IllegalAccessException ex)
+    {
+      ex.printStackTrace();
     }
   }
 
@@ -168,40 +149,29 @@ public class ObjectReceiver extends Observable implements Runnable
     Map<String, Object> map;
     try
     {
-      while ((map = mapper.readValue(objectInputStream,
-                                     new TypeReference<Map<String, Object>>() {})) != null)
+      while ((map = mapper.readValue(inputStream, new TypeReference<Map<String, Object>>()
+      {
+      })) != null)
       {
         Object mapType = map.get("type");
         Class<?> beanClass;
         if (mapType != null)
-           beanClass = beansMap.get(mapType.toString());
+        {
+          beanClass = beansMap.get(mapType.toString());
+          Constructor<?> constructor = beanClass.getConstructor(HashMap.class);
+          bean = (CLSerializable) constructor.newInstance(map);
+          setChanged();
+          notifyObservers(bean);
+        }
         else
         {
           map = null;
-          continue;
         }
-        Constructor<?> constructor = beanClass.getConstructor(HashMap.class);
-        bean = (CLSerializable) constructor.newInstance(map);
-        setChanged();
-        notifyObservers(bean);
       }
     }
     catch (IOException ex)
     {
-      Logger.getLogger(ObjectReceiver.class.getName()).log(Level.SEVERE, "Cannot read the ObjectInputStream", ex);
-    }
-  }
-
-
-  private synchronized void objectInputStreamInit(InputStream inputStream)
-  {
-    try
-    {
-      this.objectInputStream = new ObjectInputStream(inputStream);
-    }
-    catch (IOException ex)
-    {
-      Logger.getLogger(ObjectReceiver.class.getName()).log(Level.SEVERE, "Cannot instantiate ObjectInputStream", ex);
+      ex.printStackTrace();
     }
   }
 }

@@ -3,6 +3,7 @@ package com.epita.mti.plic.opensource.controlibutility.serialization;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.lang.reflect.InvocationTargetException;
+import org.codehaus.jackson.JsonGenerator;
 import org.codehaus.jackson.map.ObjectMapper;
 
 /**
@@ -32,7 +33,7 @@ public class ObjectSender
   public ObjectSender(OutputStream outputStream)
   {
     this.outputStream = outputStream;
-    this.mapper = new ObjectMapper();
+    this.mapper = new ObjectMapper().configure(JsonGenerator.Feature.AUTO_CLOSE_TARGET, false);
   }
 
   /**
@@ -51,7 +52,6 @@ public class ObjectSender
     catch (IOException ex)
     {
       ex.printStackTrace();
-//      Logger.getLogger(ObjectSender.class.getName()).log(Level.SEVERE, "Cannot close ObjectOutputStream", ex);
     }
     this.outputStream = outputStream;
   }
@@ -71,7 +71,6 @@ public class ObjectSender
     catch (IOException ex)
     {
       ex.printStackTrace();
-//      Logger.getLogger(ObjectSender.class.getName()).log(Level.SEVERE, "Cannot write into socket", ex);
     }
   }
 }
