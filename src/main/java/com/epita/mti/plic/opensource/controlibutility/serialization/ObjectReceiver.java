@@ -3,6 +3,7 @@ package com.epita.mti.plic.opensource.controlibutility.serialization;
 import com.epita.mti.plic.opensource.controlibutility.beans.CLAccel;
 import com.epita.mti.plic.opensource.controlibutility.beans.CLButtonPressure;
 import com.epita.mti.plic.opensource.controlibutility.beans.CLPressure;
+import java.io.EOFException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Constructor;
@@ -174,9 +175,14 @@ public class ObjectReceiver extends Observable implements Runnable
         }
       }
     }
+    catch (EOFException ex)
+    {
+      System.out.println("Client disconnected.");
+    }
     catch (IOException ex)
     {
       ex.printStackTrace();
     }
+    
   }
 }

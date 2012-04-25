@@ -62,7 +62,7 @@ public class ObjectSender
    * @param bean The bean represents data about pressures, accelerometric
    * values, and so on.
    */
-  public void send(CLSerializable bean) throws InvocationTargetException, IllegalAccessException
+  public synchronized void send(CLSerializable bean) throws InvocationTargetException, IllegalAccessException
   {
     try
     {
