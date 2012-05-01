@@ -6,12 +6,12 @@ import java.util.HashMap;
 /**
  *
  * @author Benoit "KIDdAe" Vasseur
- * This class will be used to serialize data coming from
- * the accelerometer.
+ * This class is used to represent a vector,
+ * a difference between two points.
+ * This can be used for a trackpad for example.
  */
-public class CLAccel extends CLSerializable
+public class CLVector extends CLSerializable
 {
-
   /**
    * X axis value in space
    */
@@ -22,24 +22,18 @@ public class CLAccel extends CLSerializable
   protected Double y;
 
   /**
-   * Z axis value in space
-   */
-  protected Double z;
-
-  /**
    * Constructor
    */
-  public CLAccel()
+  public CLVector()
   {
-    this.type = "accel";
+    this.type = "vector";
   }
 
-  public CLAccel(HashMap<String, Object> map)
+  public CLVector(HashMap<String, Object> map)
   {
     super(map);
     Object mapx = map.get("x");
     Object mapy = map.get("y");
-    Object mapz = map.get("z");
     if (mapx != null)
       this.x = Double.parseDouble(mapx.toString());
     else
@@ -48,10 +42,6 @@ public class CLAccel extends CLSerializable
       this.y = Double.parseDouble(mapy.toString());
     else
       this.y = 0.0;
-    if (mapz != null)
-      this.z = Double.parseDouble(mapz.toString());
-    else
-      this.z = 0.0;
   }
 
   public Double getX()
@@ -72,15 +62,5 @@ public class CLAccel extends CLSerializable
   public void setY(Double y)
   {
     this.y = y;
-  }
-
-  public Double getZ()
-  {
-    return z;
-  }
-
-  public void setZ(Double z)
-  {
-    this.z = z;
   }
 }
