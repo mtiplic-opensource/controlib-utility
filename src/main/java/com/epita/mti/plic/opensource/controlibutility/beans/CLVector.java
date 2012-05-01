@@ -15,11 +15,11 @@ public class CLVector extends CLSerializable
   /**
    * X axis value in space
    */
-  protected Double x;
+  protected float x;
   /**
    * Y axis value in space
    */
-  protected Double y;
+  protected float y;
 
   /**
    * Constructor
@@ -35,31 +35,31 @@ public class CLVector extends CLSerializable
     Object mapx = map.get("x");
     Object mapy = map.get("y");
     if (mapx != null)
-      this.x = Double.parseDouble(mapx.toString());
+      this.x = float.parsefloat(mapx.toString());
     else
       this.x = 0.0;
     if (mapy != null)
-      this.y = Double.parseDouble(mapy.toString());
+      this.y = float.parsefloat(mapy.toString());
     else
       this.y = 0.0;
   }
 
-  public Double getX()
+  public float getX()
   {
     return x;
   }
 
-  public void setX(Double x)
+  public void setX(float x)
   {
     this.x = x;
   }
 
-  public Double getY()
+  public float getY()
   {
     return y;
   }
 
-  public void setY(Double y)
+  public void setY(float y)
   {
     this.y = y;
   }
