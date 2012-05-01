@@ -35,13 +35,13 @@ public class CLVector extends CLSerializable
     Object mapx = map.get("x");
     Object mapy = map.get("y");
     if (mapx != null)
-      this.x = float.parsefloat(mapx.toString());
+      this.x = Float.parseFloat(mapx.toString());
     else
-      this.x = 0.0;
+      this.x = 0;
     if (mapy != null)
-      this.y = float.parsefloat(mapy.toString());
+      this.y = Float.parseFloat(mapy.toString());
     else
-      this.y = 0.0;
+      this.y = 0;
   }
 
   public float getX()
