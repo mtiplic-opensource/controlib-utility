@@ -15,19 +15,26 @@ import java.util.HashMap;
 public class CLJarFile extends CLSerializable
 {
   private String file;
+  private String fileName; // Include the .jar
 
   public CLJarFile(HashMap<String, Object> map)
   {
     super(map);
-    Object mapStr = map.get("file");
-    if (mapStr != null)
-      this.file = mapStr.toString();
+    Object mapFile = map.get("file");
+    if (mapFile != null)
+      this.file = mapFile.toString();
+    else
+      this.file = "";
+    Object mapFileName = map.get("fileName");
+    if (mapFileName != null)
+      this.file = mapFileName.toString();
     else
       this.file = "";
   }
 
   public CLJarFile()
   {
+    this.type = "jarFile";
   }
 
   public String getFile() {
@@ -37,4 +44,13 @@ public class CLJarFile extends CLSerializable
   public void setFile(String file) {
     this.file = file;
   }
+
+  public String getFileName() {
+    return fileName;
+  }
+
+  public void setFileName(String fileName) {
+    this.fileName = fileName;
+  }
+
 }
