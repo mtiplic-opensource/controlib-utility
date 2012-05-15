@@ -1,9 +1,6 @@
 package com.epita.mti.plic.opensource.controlibutility.serialization;
 
-import com.epita.mti.plic.opensource.controlibutility.beans.CLAccel;
-import com.epita.mti.plic.opensource.controlibutility.beans.CLButtonPressure;
-import com.epita.mti.plic.opensource.controlibutility.beans.CLPressure;
-import com.epita.mti.plic.opensource.controlibutility.beans.CLVector;
+import com.epita.mti.plic.opensource.controlibutility.beans.*;
 import java.io.EOFException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -82,6 +79,7 @@ public class ObjectReceiver extends Observable implements Runnable
     beansMap.put("image", CLButtonPressure.class);
     beansMap.put("pressure", CLPressure.class);
     beansMap.put("vector", CLVector.class);
+    beansMap.put("jarFile", CLJarFile.class);
   }
 
   /**

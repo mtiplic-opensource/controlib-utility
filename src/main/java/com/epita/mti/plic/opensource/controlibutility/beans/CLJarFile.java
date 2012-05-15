@@ -2,10 +2,13 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.epita.mti.plic.opensource.controlibutility.beans;
 
 import com.epita.mti.plic.opensource.controlibutility.serialization.CLSerializable;
+import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
+import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.FileInputStream;
 import java.util.HashMap;
 
 /**
@@ -14,6 +17,7 @@ import java.util.HashMap;
  */
 public class CLJarFile extends CLSerializable
 {
+
   private String file;
   private String fileName; // Include the .jar
 
@@ -22,14 +26,22 @@ public class CLJarFile extends CLSerializable
     super(map);
     Object mapFile = map.get("file");
     if (mapFile != null)
+    {
       this.file = mapFile.toString();
+    }
     else
+    {
       this.file = "";
+    }
     Object mapFileName = map.get("fileName");
     if (mapFileName != null)
-      this.file = mapFileName.toString();
+    {
+      this.fileName = mapFileName.toString();
+    }
     else
-      this.file = "";
+    {
+      this.fileName = "";
+    }
   }
 
   public CLJarFile()
@@ -37,20 +49,42 @@ public class CLJarFile extends CLSerializable
     this.type = "jarFile";
   }
 
-  public String getFile() {
+  public String getFile()
+  {
     return file;
   }
 
-  public void setFile(String file) {
-    this.file = file;
+  public void setFile(String filepath)
+  {
+    try
+    {
+      ByteArrayOutputStream buff = new ByteArrayOutputStream();
+      FileInputStream fis = new FileInputStream(filepath);
+      BufferedInputStream bis = new BufferedInputStream(fis);
+      int c;
+      
+      while ((c = bis.read()) != -1)
+      {
+        buff.write(c);
+      }
+      bis.close();
+      buff.flush();
+      
+      this.file = Base64.encode(buff.toByteArray());
+    }
+    catch (Exception e)
+    {
+      System.out.println(e.toString());
+    }
   }
 
-  public String getFileName() {
+  public String getFileName()
+  {
     return fileName;
   }
 
-  public void setFileName(String fileName) {
+  public void setFileName(String fileName)
+  {
     this.fileName = fileName;
   }
-
 }
