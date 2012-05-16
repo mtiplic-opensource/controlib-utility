@@ -8,6 +8,7 @@ import com.epita.mti.plic.opensource.controlibutility.serialization.CLSerializab
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.HashMap;
 import net.iharder.Base64;
 
@@ -54,21 +55,19 @@ public class CLJarFile extends CLSerializable
     return file;
   }
 
-  public void setFile(String filepath)
+  public void setFile(InputStream filestream)
   {
     try
     {
       ByteArrayOutputStream buff = new ByteArrayOutputStream();
-      FileInputStream fis = new FileInputStream(filepath);
-      BufferedInputStream bis = new BufferedInputStream(fis);
-      
+      BufferedInputStream bis = new BufferedInputStream(filestream);
       int c;
-      
+
       while ((c = bis.read()) != -1)
       {
         buff.write(c);
       }
-      bis.close();
+      filestream.close();
       buff.flush();
       
       this.file = Base64.encodeBytes(buff.toByteArray());
