@@ -5,11 +5,11 @@
 package com.epita.mti.plic.opensource.controlibutility.beans;
 
 import com.epita.mti.plic.opensource.controlibutility.serialization.CLSerializable;
-import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.util.HashMap;
+import net.iharder.Base64;
 
 /**
  *
@@ -61,6 +61,7 @@ public class CLJarFile extends CLSerializable
       ByteArrayOutputStream buff = new ByteArrayOutputStream();
       FileInputStream fis = new FileInputStream(filepath);
       BufferedInputStream bis = new BufferedInputStream(fis);
+      
       int c;
       
       while ((c = bis.read()) != -1)
@@ -70,7 +71,7 @@ public class CLJarFile extends CLSerializable
       bis.close();
       buff.flush();
       
-      this.file = Base64.encode(buff.toByteArray());
+      this.file = Base64.encodeBytes(buff.toByteArray());
     }
     catch (Exception e)
     {
