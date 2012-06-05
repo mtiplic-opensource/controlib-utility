@@ -10,7 +10,7 @@
 
   <name>controlib-utility</name>
   <url>http://maven.apache.org</url>
-  
+
   <build>
     <plugins>
       <plugin>
@@ -35,7 +35,7 @@
       </plugin>
     </plugins>
   </build>
-  
+
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
@@ -65,13 +65,13 @@
       <artifactId>jackson-jaxrs</artifactId>
       <version>1.9.6</version>
     </dependency>
-  
+
     <dependency>
       <groupId>net.iharder</groupId>
       <artifactId>base64</artifactId>
       <version>2.3.8</version>
     </dependency>
-            
+
   </dependencies>
-  
+
 </project>
