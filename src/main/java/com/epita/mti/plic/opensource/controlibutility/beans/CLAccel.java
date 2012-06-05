@@ -34,6 +34,9 @@ public class CLAccel extends CLSerializable
     this.type = "accel";
   }
 
+  /**
+   * Constructor use by the receiver
+   */
   public CLAccel(HashMap<String, Object> map)
   {
     super(map);

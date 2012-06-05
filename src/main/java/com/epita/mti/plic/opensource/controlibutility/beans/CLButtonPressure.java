@@ -25,6 +25,10 @@ public class CLButtonPressure extends CLSerializable
      this.type = "button-pressure";
   }
 
+  /**
+   * Constructor used by the receiver.
+   * @param map
+   */
   public CLButtonPressure(HashMap<String, Object> map)
   {
     super(map);
