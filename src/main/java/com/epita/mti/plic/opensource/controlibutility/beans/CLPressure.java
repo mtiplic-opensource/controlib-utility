@@ -31,6 +31,10 @@ public class CLPressure extends CLSerializable
     this.type = "pressure";
   }
 
+  /**
+   * Constructor used by the receiver.
+   * @param map
+   */
   public CLPressure(HashMap<String, Object> map)
   {
     super(map);

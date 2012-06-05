@@ -29,6 +29,10 @@ public class CLVector extends CLSerializable
     this.type = "vector";
   }
 
+  /**
+   * Constructor used by the receiver.
+   * @param map
+   */
   public CLVector(HashMap<String, Object> map)
   {
     super(map);

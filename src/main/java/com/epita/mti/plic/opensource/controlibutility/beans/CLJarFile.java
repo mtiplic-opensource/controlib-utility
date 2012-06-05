@@ -7,7 +7,6 @@ package com.epita.mti.plic.opensource.controlibutility.beans;
 import com.epita.mti.plic.opensource.controlibutility.serialization.CLSerializable;
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.HashMap;
 import net.iharder.Base64;
@@ -15,13 +14,25 @@ import net.iharder.Base64;
 /**
  *
  * @author Benoit "KIDdAe" Vasseur
+ * This class is use to send the plugin definition of the one used
+ * by the client to the server
  */
 public class CLJarFile extends CLSerializable
 {
-
+  /*
+   * Content of the jar file
+   */
   private String file;
+
+  /*
+   * The name of the jar file
+   */
   private String fileName; // Include the .jar
 
+
+  /**
+   * Constructor used by the receiver
+   */
   public CLJarFile(HashMap<String, Object> map)
   {
     super(map);
@@ -45,6 +56,9 @@ public class CLJarFile extends CLSerializable
     }
   }
 
+  /**
+   * Constructor
+   */
   public CLJarFile()
   {
     this.type = "jarFile";
@@ -69,7 +83,7 @@ public class CLJarFile extends CLSerializable
       }
       filestream.close();
       buff.flush();
-      
+
       this.file = Base64.encodeBytes(buff.toByteArray());
     }
     catch (Exception e)
