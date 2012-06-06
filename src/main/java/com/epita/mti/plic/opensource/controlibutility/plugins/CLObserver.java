@@ -6,9 +6,9 @@ import java.util.Observer;
 /**
  *
  * @author Benoit "KIDdAe" Vasseur
- * This is the interface the all plugins have to implements
+ * This is the interface the all plugins that don't use a sender have to implements
  */
-public interface CLPlugin extends Observer
+public interface CLObserver extends Observer
 {
   public void update(Observable o, Object arg);
 }
