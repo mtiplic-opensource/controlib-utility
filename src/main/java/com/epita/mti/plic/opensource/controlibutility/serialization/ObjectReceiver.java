@@ -23,10 +23,11 @@ import org.codehaus.jackson.type.TypeReference;
  */
 public class ObjectReceiver extends Observable implements Runnable
 {
-
+  
   private InputStream inputStream = null;
   public static HashMap<String, Class<?>> beansMap;
   private ObjectReader reader = null;
+  private ArrayList<Observer> currentObservers = new ArrayList<Observer>();
 
   /**
    * Ctor instantiate the IntputStream used by the ObjectReceiver to deserialize
@@ -61,6 +62,22 @@ public class ObjectReceiver extends Observable implements Runnable
   {
     this.inputStream = socket.getInputStream();
     addObserver(observer);
+    ObjectMapper mapper = new ObjectMapper().configure(JsonParser.Feature.AUTO_CLOSE_SOURCE, false);
+    reader = mapper.reader(new TypeReference<Map<String, Object>>()
+    {
+    });
+    initMap();
+  }
+
+  /**
+   * Ctor alternate version with no observer.
+   *
+   * @param inputStream Socket's input stream.
+   * @param observer User's observer.
+   */
+  public ObjectReceiver(Socket socket) throws IOException
+  {
+    this.inputStream = socket.getInputStream();
     ObjectMapper mapper = new ObjectMapper().configure(JsonParser.Feature.AUTO_CLOSE_SOURCE, false);
     reader = mapper.reader(new TypeReference<Map<String, Object>>()
     {
@@ -114,10 +131,10 @@ public class ObjectReceiver extends Observable implements Runnable
     {
       ex.printStackTrace();
     }
-
+    
     this.inputStream = inputStream;
   }
-
+  
   @Override
   public void run()
   {
@@ -183,6 +200,22 @@ public class ObjectReceiver extends Observable implements Runnable
     {
       ex.printStackTrace();
     }
-
+    
+  }
+  
+  public void clearPlugins()
+  {
+    for (Observer o : currentObservers)
+    {
+      deleteObserver(o);
+    }
+    currentObservers.clear();
+  }
+  
+  @Override
+  public void addObserver(Observer o)
+  {
+    currentObservers.add(o);
+    super.addObserver(o);
   }
 }
