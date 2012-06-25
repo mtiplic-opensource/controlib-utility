@@ -8,6 +8,8 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.net.Socket;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.ObjectReader;
@@ -42,7 +44,8 @@ public class ObjectReceiver extends Observable implements Runnable
     this.inputStream = socket.getInputStream();
     for (Observer observer : observersList)
     {
-      addObserver(observer);
+      currentObservers.add(observer);
+      super.addObserver(observer);
     }
     ObjectMapper mapper = new ObjectMapper().configure(JsonParser.Feature.AUTO_CLOSE_SOURCE, false);
     reader = mapper.reader(new TypeReference<Map<String, Object>>()
@@ -61,7 +64,8 @@ public class ObjectReceiver extends Observable implements Runnable
                         Observer observer) throws IOException
   {
     this.inputStream = socket.getInputStream();
-    addObserver(observer);
+    currentObservers.add(observer);
+    super.addObserver(observer);
     ObjectMapper mapper = new ObjectMapper().configure(JsonParser.Feature.AUTO_CLOSE_SOURCE, false);
     reader = mapper.reader(new TypeReference<Map<String, Object>>()
     {
@@ -198,6 +202,14 @@ public class ObjectReceiver extends Observable implements Runnable
     }
     catch (IOException ex)
     {
+      try
+      {
+        inputStream.reset();
+      }
+      catch (IOException ex1)
+      {
+        Logger.getLogger(ObjectReceiver.class.getName()).log(Level.SEVERE, null, ex1);
+      }
       ex.printStackTrace();
     }
     
