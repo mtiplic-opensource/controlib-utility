@@ -25,9 +25,9 @@ import org.codehaus.jackson.type.TypeReference;
  */
 public class ObjectReceiver extends Observable implements Runnable
 {
-  
+
   private InputStream inputStream = null;
-  public static HashMap<String, Class<?>> beansMap;
+  private HashMap<String, Class<?>> beansMap;
   private ObjectReader reader = null;
   private ArrayList<Observer> currentObservers = new ArrayList<Observer>();
 
@@ -92,7 +92,7 @@ public class ObjectReceiver extends Observable implements Runnable
   /**
    * Initialize the map with defaults value;
    */
-  private static void initMap()
+  private void initMap()
   {
     beansMap = new HashMap<String, Class<?>>();
     beansMap.put("accel", CLAccel.class);
@@ -135,10 +135,10 @@ public class ObjectReceiver extends Observable implements Runnable
     {
       ex.printStackTrace();
     }
-    
+
     this.inputStream = inputStream;
   }
-  
+
   @Override
   public void run()
   {
@@ -212,9 +212,9 @@ public class ObjectReceiver extends Observable implements Runnable
       }
       ex.printStackTrace();
     }
-    
+
   }
-  
+
   public void clearPlugins()
   {
     for (Observer o : currentObservers)
@@ -223,7 +223,17 @@ public class ObjectReceiver extends Observable implements Runnable
     }
     currentObservers.clear();
   }
-  
+
+  public HashMap<String, Class<?>> getBeansMap()
+  {
+    return beansMap;
+  }
+
+  public void setBeansMap(HashMap<String, Class<?>> beansMap)
+  {
+    this.beansMap = beansMap;
+  }
+
   @Override
   public void addObserver(Observer o)
   {
