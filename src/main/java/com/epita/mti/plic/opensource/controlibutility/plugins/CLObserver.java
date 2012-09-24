@@ -11,4 +11,5 @@ import java.util.Observer;
 public interface CLObserver extends Observer
 {
   public void update(Observable o, Object arg);
+  public String getVersion();
 }

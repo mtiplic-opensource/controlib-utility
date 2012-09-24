@@ -13,4 +13,5 @@ public interface CLObserverSend extends Observer
 {
   public void update(Observable o, Object arg);
   public void setObjectSender(ObjectSender sender);
+  public String getVersion();
 }
