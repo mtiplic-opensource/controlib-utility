@@ -3,6 +3,7 @@ package com.epita.mti.plic.opensource.controlibutility.serialization;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.lang.reflect.InvocationTargetException;
+import java.util.concurrent.locks.ReentrantLock;
 import org.codehaus.jackson.JsonGenerator;
 import org.codehaus.jackson.map.ObjectMapper;
 
@@ -24,6 +25,8 @@ public class ObjectSender
    */
   private ObjectMapper mapper = null;
 
+  private ReentrantLock mutex = null;
+  
   /**
    * Ctor instantiate the ObjectOutputStream used by the ObjectSender to
    * serialize data from a socket's output stream.
@@ -34,6 +37,7 @@ public class ObjectSender
   {
     this.outputStream = outputStream;
     this.mapper = new ObjectMapper().configure(JsonGenerator.Feature.AUTO_CLOSE_TARGET, false);
+    this.mutex = new ReentrantLock(true);
   }
 
   /**
@@ -62,8 +66,9 @@ public class ObjectSender
    * @param bean The bean represents data about pressures, accelerometric
    * values, and so on.
    */
-  public synchronized void send(CLSerializable bean) throws InvocationTargetException, IllegalAccessException
+  public void send(CLSerializable bean) throws InvocationTargetException, IllegalAccessException
   {
+    mutex.lock();
     try
     {
       mapper.writeValue(outputStream, bean);
@@ -71,6 +76,10 @@ public class ObjectSender
     catch (IOException ex)
     {
       ex.printStackTrace();
+    }
+    finally
+    {
+      mutex.unlock();
     }
   }
 }
