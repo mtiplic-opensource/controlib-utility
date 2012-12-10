@@ -191,11 +191,7 @@ public class ObjectReceiver extends Observable implements Runnable
           bean = (CLSerializable) constructor.newInstance(map);
           setChanged();
           notifyObservers(bean);
-          try
-          {
-            map = reader.readValue(inputStream);
-          }
-          catch (IOException ex) {}
+          map = reader.readValue(inputStream);
         }
         else
         {
@@ -209,7 +205,7 @@ public class ObjectReceiver extends Observable implements Runnable
     }
     catch (IOException ex)
     {
-      Logger.getLogger(ObjectReceiver.class.getName()).log(Level.SEVERE, null, ex);
+      //ex.printStackTrace();
     }
     
 
