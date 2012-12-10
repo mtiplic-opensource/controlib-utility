@@ -202,15 +202,8 @@ public class ObjectReceiver extends Observable implements Runnable
     }
     catch (IOException ex)
     {
-      try
-      {
-        inputStream.reset();
-      }
-      catch (IOException ex1)
-      {
-        Logger.getLogger(ObjectReceiver.class.getName()).log(Level.SEVERE, null, ex1);
-      }
-      ex.printStackTrace();
+      //inputStream = new 
+      System.err.println("La bite.");
     }
 
   }

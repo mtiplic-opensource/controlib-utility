@@ -24,7 +24,10 @@ public class ObjectSender
    * The mapper used to serialize in JSON.
    */
   private ObjectMapper mapper = null;
-
+  /**
+   * The mutex used to ensure that there is only one sender writing on the
+   * socket.
+   */
   private ReentrantLock mutex = null;
   
   /**
