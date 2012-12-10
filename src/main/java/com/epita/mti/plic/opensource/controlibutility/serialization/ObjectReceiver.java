@@ -11,6 +11,7 @@ import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.codehaus.jackson.JsonParser;
+import org.codehaus.jackson.JsonProcessingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.ObjectReader;
 import org.codehaus.jackson.type.TypeReference;
@@ -178,7 +179,8 @@ public class ObjectReceiver extends Observable implements Runnable
     Map<String, Object> map;
     try
     {
-      while ((map = reader.readValue(inputStream)) != null)
+      map = reader.readValue(inputStream);
+      while (map != null)
       {
         Object mapType = map.get("type");
         Class<?> beanClass;
@@ -189,6 +191,11 @@ public class ObjectReceiver extends Observable implements Runnable
           bean = (CLSerializable) constructor.newInstance(map);
           setChanged();
           notifyObservers(bean);
+          try
+          {
+            map = reader.readValue(inputStream);
+          }
+          catch (IOException ex) {}
         }
         else
         {
@@ -202,9 +209,9 @@ public class ObjectReceiver extends Observable implements Runnable
     }
     catch (IOException ex)
     {
-      //inputStream = new 
-      System.err.println("La bite.");
+      Logger.getLogger(ObjectReceiver.class.getName()).log(Level.SEVERE, null, ex);
     }
+    
 
   }
 
